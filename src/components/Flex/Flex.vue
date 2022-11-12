@@ -2,7 +2,7 @@
 export type FlexDirection = 'row' | 'column' | 'row-reverse' | 'column-reverse'
 export type FlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse'
 export type FlexAlignment =
-  | 'start'
+  | 'flex-start'
   | 'center'
   | 'end'
   | 'stretch'
@@ -19,7 +19,7 @@ export interface FlexProps {
 
 withDefaults(defineProps<FlexProps>(), {
   align: 'stretch',
-  justify: 'start',
+  justify: 'flex-start',
   direction: 'row',
   wrap: 'wrap',
   gap: '1rem',

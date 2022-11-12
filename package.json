@@ -39,19 +39,32 @@
     "release": "release-it",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "docs:serve": "vitepress serve docs",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "peerDependencies": {
-    "vue": "^3.2.25"
+    "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.1.2",
+    "@storybook/addon-essentials": "^7.0.0-alpha.48",
+    "@storybook/addon-interactions": "^7.0.0-alpha.48",
+    "@storybook/addon-links": "^7.0.0-alpha.48",
+    "@storybook/testing-library": "^0.0.13",
+    "@storybook/vue3": "^7.0.0-alpha.48",
+    "@storybook/vue3-vite": "^7.0.0-alpha.48",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "css-loader": "^6.7.1",
     "release-it": "^15.5.0",
     "rimraf": "^3.0.2",
-    "sass": "^1.55.0",
+    "sass": "^1.56.1",
+    "sass-loader": "^13.2.0",
+    "storybook": "^7.0.0-alpha.48",
+    "style-loader": "^3.3.1",
     "typescript": "^4.8.4",
-    "vite": "^3.1.8",
-    "vitepress": "^1.0.0-alpha.21",
-    "vue-tsc": "^1.0.8"
-  }
+    "vite": "^3.2.3",
+    "vitepress": "^1.0.0-alpha.28",
+    "vue-tsc": "^1.0.9"
+  },
+  "dependencies": {}
 }

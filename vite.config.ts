@@ -7,7 +7,14 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-    }
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/styles/main.scss";`,
+      },
+    },
   },
   build: {
     lib: {
@@ -24,6 +31,6 @@ export default defineConfig({
         },
       },
     },
-    emptyOutDir: true
+    emptyOutDir: true,
   },
 })

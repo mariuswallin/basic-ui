@@ -10,14 +10,14 @@ import Switch from './Switch/Switch.vue'
 import Textarea from './Textarea/Textarea.vue'
 
 export {
-	Button,
-	Input,
-	Checkbox,
-	Select,
-	Form,
-	Flex,
-	Grid,
-	Heading,
-	Switch,
-	Textarea,
+  Button,
+  Input,
+  Checkbox,
+  Select,
+  Form,
+  Flex,
+  Grid,
+  Heading,
+  Switch,
+  Textarea,
 }

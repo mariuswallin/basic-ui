@@ -61,6 +61,8 @@ interface ButtonProps {
   size?: ButtonSize
   theme?: ButtonTheme
   loading?: boolean
+  error?: boolean
+  warning?: boolean
   disabled?: boolean
   type?: ButtonType
 }

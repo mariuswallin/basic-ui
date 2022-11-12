@@ -67,21 +67,21 @@ function onChange(event: Event): void {
 
 .b-checkbox {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   gap: 0.75rem;
   font-size: 1rem;
   line-height: 1.1;
 
   &:hover {
     .b-checkbox__element:not(:indeterminate, :disabled) {
-      border-color: var(--b-color-primary, $primary);
+      border-color: var(--primary);
     }
   }
 
   &--required {
     .b-checkbox__label:after {
       content: ' *';
-      color: var(--b-color-negative, $negative);
+      color: var(--negative);
     }
   }
 
@@ -90,7 +90,7 @@ function onChange(event: Event): void {
     aspect-ratio: 1;
 
     position: absolute;
-    color: var(--b-color-primary-contrast, $primary-contrast);
+    color: var(--primary-contrast);
   }
 
   &__element {
@@ -100,16 +100,16 @@ function onChange(event: Event): void {
     width: 1.2em;
     aspect-ratio: 1;
     flex-shrink: 0;
-    border: 1px solid var(--b-checkbox-border-color, #d0d0d0);
-    border-radius: calc(var(--b-border-radius, $border-radius) / 2);
-    transition: 100ms var(--b-easing-function, $easing-function);
+    border: 1px solid #d0d0d0;
+    border-radius: calc(var(--border-radius) / 2);
+    transition: 100ms var(--easing-function);
 
     &:disabled {
-      border-color: var(--b-checkbox-color-disabled, #d0d0d0) !important;
+      border-color: #d0d0d0 !important;
     }
 
     &:checked {
-      border-color: var(--b-color-primary, $primary);
+      border-color: var(--primary);
       border-width: 0.6em;
     }
   }

@@ -2,10 +2,10 @@ import { App } from 'vue'
 import * as components from './components'
 
 function install(app: App) {
-	for(const key in components) {
-		// @ts-expect-error
-		app.component(key, components[key])
-	}
+  let key: keyof typeof import('./components')
+  for (key in components) {
+    app.component(key, components[key])
+  }
 }
 
 export default { install }

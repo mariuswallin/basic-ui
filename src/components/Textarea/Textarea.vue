@@ -92,13 +92,13 @@ function handleInput(event: Event) {
     resize: v-bind(resize);
     padding-inline: var(--b-textarea-padding-inline);
     padding-block: var(--b-textarea-padding-block);
-    border-radius: var(--b-textarea-border-radius, $border-radius);
+    border-radius: var(--border-radius);
 
-    border: 1px solid var(--b-textarea-border-color, $primary);
+    border: 1px solid var(--primary);
     font: inherit;
 
     &:focus-visible {
-      outline: 2px solid var(--b-color-primary, $primary);
+      outline: 2px solid var(--primary);
       outline-offset: 2px;
     }
   }
@@ -124,7 +124,7 @@ function handleInput(event: Event) {
     .b-textarea__label {
       &:after {
         content: '*';
-        color: var(--b-color-negative, $negative);
+        color: var(--negative);
         margin-left: 0.25rem;
       }
     }

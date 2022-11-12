@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /** Type definitions */
-export type ButtonSize = 'small' | 'default'
+export type ButtonSize = 'small' | 'large' | 'default'
 export type ButtonType = 'button' | 'submit' | 'reset'
 export type ButtonTheme =
   | 'default'
@@ -10,11 +10,14 @@ export type ButtonTheme =
   | 'link'
 
 export interface ButtonProps {
+  message?: string
   label?: string
   tag?: string
   size?: ButtonSize
   theme?: ButtonTheme
   loading?: boolean
+  error?: boolean
+  warning?: boolean
   disabled?: boolean
   type?: ButtonType
 }
@@ -24,6 +27,8 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   size: 'default',
   theme: 'default',
   loading: false,
+  warning: false,
+  error: false,
   disabled: false,
   type: 'button',
 })
@@ -42,12 +47,13 @@ function onClick(event: MouseEvent): void {
   <component
     v-bind="$attrs"
     :is="tag"
-    class="b-button"
     :class="[
-      `b-button--size-${size} b-button--theme-${theme}`,
+      `b-button b-button--size-${size} b-button--theme-${theme}`,
       {
         'b-button--state-loading': loading,
         'b-button--state-disabled': disabled,
+        'b-button--state-error': error,
+        'b-button--state-warning': warning,
       },
     ]"
     @click="onClick"
@@ -59,17 +65,16 @@ function onClick(event: MouseEvent): void {
       <slot name="default">{{ label }}</slot>
       <slot name="icon-right" />
     </div>
+    <slot name="message">{{ message }}</slot>
   </component>
 </template>
 
 <style lang="scss">
-@import '../../styles/main.scss';
-
 .b-button {
   box-sizing: border-box;
   border: none;
   position: relative;
-  font-size: 1rem;
+  font-size: var(--b-button-font-size, 1rem);
 
   padding-inline: var(--b-button-padding-inline);
   padding-block: var(--b-button-padding-block);
@@ -80,7 +85,7 @@ function onClick(event: MouseEvent): void {
   gap: var(--b-button-gap, 0.5rem);
 
   &:focus-visible {
-    outline: 2px solid var(--b-color-primary, $primary);
+    outline: 2px solid var(--b-color-primary, var(--primary));
     outline-offset: 2px;
   }
 
@@ -93,7 +98,7 @@ function onClick(event: MouseEvent): void {
   }
 
   &__content {
-    transition: 150ms var(--b-easing-function, $easing-function);
+    transition: 150ms var(--b-easing-function, var(--easing-function));
   }
 
   /* Sizes */
@@ -106,6 +111,11 @@ function onClick(event: MouseEvent): void {
     &-small {
       --b-button-padding-block: 0.25rem;
       --b-button-padding-inline: 0.6rem;
+    }
+    &-large {
+      --b-button-padding-block: 0.8rem;
+      --b-button-padding-inline: 1rem;
+      --b-button-font-size: 1.2rem;
     }
   }
 
@@ -138,6 +148,17 @@ function onClick(event: MouseEvent): void {
       }
     }
 
+    &-error {
+      cursor: not-allowed;
+      border: 2px solid var(--b-border, var(--error1));
+      color: var(--text-light-error-2);
+    }
+
+    &-warning {
+      cursor: not-allowed;
+      border: 2px solid var(--b-border, var(--warning));
+    }
+
     &-disabled {
       opacity: 0.5;
     }
@@ -147,14 +168,14 @@ function onClick(event: MouseEvent): void {
   &--theme {
     &-default {
       background-color: transparent;
-      color: var(--b-color-primary, $primary);
+      color: var(--b-color-primary, var(--primary));
 
       &::before {
         content: '';
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        background-color: var(--b-color-primary, $primary);
+        background-color: var(--b-color-primary, var(--primary));
         opacity: 0.06;
         z-index: -1;
       }
@@ -173,15 +194,15 @@ function onClick(event: MouseEvent): void {
     }
 
     &-primary {
-      background-color: var(--b-color-primary, $primary);
-      color: var(--b-color-primary-contrast, $primary-contrast);
+      background-color: var(--b-color-primary, var(--primary));
+      color: var(--b-color-primary-contrast, var(--primary-contrast));
 
       &::before {
         content: '';
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        background-color: $primary-contrast;
+        background-color: var(--primary-contrast);
         opacity: 0;
         z-index: 1;
       }
@@ -201,28 +222,28 @@ function onClick(event: MouseEvent): void {
 
     &-secondary {
       background-color: transparent;
-      color: var(--b-color-primary, $primary);
-      border: 1px solid var(--b-color-primary, $primary);
+      color: var(--b-color-primary, var(--secondary));
+      border: 1px solid var(--b-color-primary, var(--secondary));
 
       &:not(:disabled):active {
         background-color: transparent;
-        border-color: var(--b-color-primary--active, $primary);
+        border-color: var(--b-color-primary--active, var(--secondary));
       }
     }
 
     &-tertiary {
       background-color: transparent;
-      color: var(--b-color-primary, $primary);
+      color: var(--b-color-primary, var(--tertiary));
       border: 1px solid transparent;
 
       &:not(:disabled):where(:hover, :focus-visible) {
-        border-color: var(--b-color-primary, $primary);
+        border-color: var(--b-color-primary, var(--tertiary));
       }
     }
 
     &-link {
       padding: 0;
-      color: var(--b-color-primary, $primary);
+      color: var(--b-color-primary, var(--primary));
 
       &:not(:disabled):where(:hover, :focus-visible) {
         text-decoration: underline;

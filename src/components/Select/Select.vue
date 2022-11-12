@@ -84,13 +84,13 @@ function onInput(event: Event): void {
     width: 100%;
     padding-inline: var(--b-select-padding-inline);
     padding-block: var(--b-select-padding-block);
-    border-radius: var(--b-select-border-radius, $border-radius);
+    border-radius: var(--border-radius);
 
-    border: 1px solid var(--b-select-border-color, $primary);
+    border: 1px solid var(--primary);
     font: inherit;
 
     &:focus-visible {
-      outline: 2px solid var(--b-color-primary, $primary);
+      outline: 2px solid var(--primary);
       outline-offset: 2px;
     }
   }
@@ -118,7 +118,7 @@ function onInput(event: Event): void {
     .b-select__label {
       &:after {
         content: '*';
-        color: var(--b-color-negative, $negative);
+        color: var(--negative);
         margin-left: 0.25rem;
       }
     }

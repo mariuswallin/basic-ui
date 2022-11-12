@@ -12,6 +12,8 @@ export interface InputProps {
   description?: string
   name?: string
   loading?: boolean
+  warning?: boolean
+  error?: boolean
 }
 
 withDefaults(defineProps<InputProps>(), {
@@ -78,11 +80,11 @@ function onInput(event: Event): void {
     border-radius: var(--b-input-border-radius, 0.5rem);
     width: 100%;
 
-    border: 1px solid var(--b-input-border-color, $primary);
+    border: 1px solid var(--primary);
     font: inherit;
 
     &:focus-visible {
-      outline: 2px solid var(--b-color-primary, $primary);
+      outline: 2px solid var(--primary);
       outline-offset: 2px;
     }
   }
@@ -100,7 +102,7 @@ function onInput(event: Event): void {
     .b-input__label {
       &::after {
         content: '*';
-        color: var(--b-color-negative, $negative);
+        color: var(--negative);
         margin-left: 0.25rem;
       }
     }
@@ -117,7 +119,7 @@ function onInput(event: Event): void {
         aspect-ratio: 1;
         border-radius: 20rem;
         position: absolute;
-        right: var(--b-input-padding-inline, 1rem);
+        right: 1rem;
         top: 50%;
         translate: 0 -50%;
 
