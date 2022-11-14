@@ -85,7 +85,7 @@ function onClick(event: MouseEvent): void {
   gap: var(--b-button-gap, 0.5rem);
 
   &:focus-visible {
-    outline: 2px solid var(--b-color-primary, var(--primary));
+    outline: 2px solid var(--b-color-primary, var(--base-tertiary));
     outline-offset: 2px;
   }
 
@@ -116,6 +116,93 @@ function onClick(event: MouseEvent): void {
       --b-button-padding-block: 0.8rem;
       --b-button-padding-inline: 1rem;
       --b-button-font-size: 1.2rem;
+    }
+  }
+
+  /* Themes */
+  &--theme {
+    &-default {
+      background-color: transparent;
+      color: var(--b-color-primary, var(--text-primary-1));
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background-color: var(--b-color-slate, var(--base-primary));
+        opacity: 0.06;
+        z-index: -1;
+      }
+
+      &:not(:disabled):where(:hover, :focus-visible) {
+        &::before {
+          opacity: 0.1;
+        }
+      }
+
+      &:not(:disabled):active {
+        &::before {
+          opacity: 0.12;
+        }
+      }
+    }
+
+    &-primary {
+      background-color: var(--b-color-primary, var(--base-primary));
+      color: var(--b-color-primary-contrast, var(--text-primary-1));
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background-color: var(--base-primary-2);
+        opacity: 0;
+        z-index: 1;
+      }
+
+      &:not(:disabled):where(:hover, :focus-visible) {
+        &::before {
+          opacity: 0.1;
+        }
+      }
+
+      &:not(:disabled):active {
+        &::before {
+          opacity: 0.15;
+        }
+      }
+    }
+
+    &-secondary {
+      background-color: transparent;
+      color: var(--b-color-primary, var(--base-secondary));
+      border: 1px solid var(--b-color-primary, var(--base-secondary));
+
+      &:not(:disabled):active {
+        background-color: transparent;
+        border-color: var(--b-color-primary--active, var(--base-secondary));
+      }
+    }
+
+    &-tertiary {
+      background-color: transparent;
+      color: var(--b-color-primary, var(--base-tertiary));
+      border: 1px solid transparent;
+
+      &:not(:disabled):where(:hover, :focus-visible) {
+        border-color: var(--b-color-primary, var(--base-tertiary));
+      }
+    }
+
+    &-link {
+      padding: 0;
+      color: var(--b-color-primary, var(--base-primary));
+
+      &:not(:disabled):where(:hover, :focus-visible) {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -150,104 +237,18 @@ function onClick(event: MouseEvent): void {
 
     &-error {
       cursor: not-allowed;
-      border: 2px solid var(--b-border, var(--error1));
-      color: var(--text-light-error-2);
+      border: 2px solid var(--b-border, var(--base-error-3));
+      background-color: var(--b-color-primary, var(--base-error-1));
     }
 
     &-warning {
       cursor: not-allowed;
-      border: 2px solid var(--b-border, var(--warning));
+      border: 2px solid var(--b-border, var(--base-warning-3));
+      background-color: var(--b-color-primary, var(--base-warning-1));
     }
 
     &-disabled {
       opacity: 0.5;
-    }
-  }
-
-  /* Themes */
-  &--theme {
-    &-default {
-      background-color: transparent;
-      color: var(--b-color-primary, var(--primary));
-
-      &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background-color: var(--b-color-primary, var(--primary));
-        opacity: 0.06;
-        z-index: -1;
-      }
-
-      &:not(:disabled):where(:hover, :focus-visible) {
-        &::before {
-          opacity: 0.1;
-        }
-      }
-
-      &:not(:disabled):active {
-        &::before {
-          opacity: 0.12;
-        }
-      }
-    }
-
-    &-primary {
-      background-color: var(--b-color-primary, var(--primary));
-      color: var(--b-color-primary-contrast, var(--primary-contrast));
-
-      &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background-color: var(--primary-contrast);
-        opacity: 0;
-        z-index: 1;
-      }
-
-      &:not(:disabled):where(:hover, :focus-visible) {
-        &::before {
-          opacity: 0.1;
-        }
-      }
-
-      &:not(:disabled):active {
-        &::before {
-          opacity: 0.15;
-        }
-      }
-    }
-
-    &-secondary {
-      background-color: transparent;
-      color: var(--b-color-primary, var(--secondary));
-      border: 1px solid var(--b-color-primary, var(--secondary));
-
-      &:not(:disabled):active {
-        background-color: transparent;
-        border-color: var(--b-color-primary--active, var(--secondary));
-      }
-    }
-
-    &-tertiary {
-      background-color: transparent;
-      color: var(--b-color-primary, var(--tertiary));
-      border: 1px solid transparent;
-
-      &:not(:disabled):where(:hover, :focus-visible) {
-        border-color: var(--b-color-primary, var(--tertiary));
-      }
-    }
-
-    &-link {
-      padding: 0;
-      color: var(--b-color-primary, var(--primary));
-
-      &:not(:disabled):where(:hover, :focus-visible) {
-        text-decoration: underline;
-      }
     }
   }
 }

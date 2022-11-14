@@ -1,122 +1,152 @@
-/* Colors */
+@use 'sass:math';
+@use 'sass:map';
 
-@mixin styles($modes) {
+@mixin styles($modes, $hue, $saturation, $lightness, $name) {
+  $base: (
+    'light': hsl($hue $saturation $lightness),
+    'dark':
+      hsl(
+        $hue math.round(calc($saturation / 2))
+          math.round(calc($lightness / 1.5))
+      ),
+  );
+
   @each $mode, $variants in $modes {
-    @each $color in map-get($variants, 'colors') {
-      @for $i from 1 through length(map-get($variants, 'color-hues')) {
-        --#{$color}-#{$mode}-#{$i}: hsl(
-          var(--#{$color}-hue) #{nth(map-get($variants, 'color-hues'), $i)}
+    @each $key, $hues in $variants {
+      @for $i from 1 through length($hues) {
+        --#{$key}-#{$mode}-#{$name}-#{$i}: hsl(#{$hue} #{nth($hues, $i)});
+        --#{$key}-#{$mode}-#{$name}-#{calc($i * 100)}: hsl(
+          #{$hue} #{$saturation} #{calc($lightness - (7% * $i))}
         );
+      }
+      @if $key == 'base' {
+        $base_hue: map.get($base, #{$mode});
+        @if $name {
+          --#{$key}-#{$mode}-#{$name}: #{$base_hue};
+        } @else {
+          --#{$key}-#{$mode}: #{$base_hue};
+        }
       }
     }
   }
 }
 
-@mixin texts($modes) {
+@mixin styleMode($schema, $modes, $colors) {
   @each $mode, $variants in $modes {
-    @each $color in map-get($variants, 'colors') {
-      @for $i from 1 through length(map-get($variants, 'text-hues')) {
-        --text-#{$mode}-#{$color}-#{$i}: hsl(
-          var(--#{$color}-hue) #{nth(map-get($variants, 'text-hues'), $i)}
-        );
+    @if $schema == $mode {
+      @each $key, $hues in $variants {
+        @each $c, $color in $colors {
+          @for $i from 1 through length($hues) {
+            --#{$key}-#{$c}-#{$i}: var(--#{$key}-#{$mode}-#{$c}-#{$i});
+          }
+          --#{$key}-#{$c}: var(--#{$key}-#{$mode}-#{$c});
+        }
       }
     }
   }
 }
 
-$light-color-hues: 25% 90%, 20% 99%, 20% 92%, 20% 85%;
 $light-text-hues: 100% 10%, 30% 30%;
-$dark-color-hues: 10% 10%, 10% 15%, 5% 20%, 5% 25%;
+$light-base-hues: 70% 60%, 70% 50%, 70% 40%, 70% 30%, 70% 20%;
+$light-shadow-hues: 10% 20%, 10 15%;
 $dark-text-hues: 15% 85%, 5% 65%;
-$dim-color-hues: 10% 20%, 10% 25%, 5% 30%, 5% 35%;
-$dim-text-hues: 15% 75%, 10% 61%;
-$colors: 'primary', 'secondary', 'error';
+$dark-base-hues: 30% 60%, 30% 50%, 30% 40%, 30% 30%, 30% 20%;
+$dark-shadow-hues: 50% 10%, 50% 5%;
 
 $modes: (
   'light': (
-    'colors': $colors,
-    'color-hues': $light-color-hues,
-    'text-hues': $light-text-hues,
-  ),
-  'dim': (
-    'colors': $colors,
-    'color-hues': $dim-color-hues,
-    'text-hues': $dim-text-hues,
+    'text': $light-text-hues,
+    'base': $light-base-hues,
+    'shadow': $light-shadow-hues,
   ),
   'dark': (
-    'colors': $colors,
-    'color-hues': $dark-color-hues,
-    'text-hues': $dark-text-hues,
+    'text': $dark-text-hues,
+    'base': $dark-base-hues,
+    'shadow': $dark-shadow-hues,
+  ),
+);
+
+$colors: (
+  'primary': (
+    'h': 202,
+    's': 99%,
+    'l': 29%,
+  ),
+  'secondary': (
+    'h': 203,
+    's': 61%,
+    'l': 84%,
+  ),
+  'tertiary': (
+    'h': 203,
+    's': 86%,
+    'l': 75%,
+  ),
+  'inverse': (
+    'h': 13,
+    's': 61%,
+    'l': 57%,
+  ),
+  'warning': (
+    'h': 52,
+    's': 94%,
+    'l': 52%,
+  ),
+  'success': (
+    'h': 177,
+    's': 37%,
+    'l': 42%,
+  ),
+  'error': (
+    'h': 0,
+    's': 100%,
+    'l': 60%,
+  ),
+  'slate': (
+    'h': 220,
+    's': 1%,
+    'l': 70%,
+  ),
+  'dark': (
+    'h': 220,
+    's': 1%,
+    'l': 40%,
+  ),
+  'white': (
+    'h': 220,
+    's': 1%,
+    'l': 100%,
   ),
 );
 
 * {
-  /* primary foundation */
-  --primary-hue: 200;
-  --primary-saturation: 100%;
-  --primary-lightness: 50%;
-  --secondary-hue: 200;
-  --secondary-saturation: 100%;
-  --secondary-lightness: 50%;
-  --error-hue: 0;
-  --error-saturation: 100%;
-  --error-lightness: 50%;
-  --warning-hue: 0;
-  --warning-saturation: 100%;
-  --warning-lightness: 50%;
-  --success-hue: 0;
-  --success-saturation: 100%;
-  --success-lightness: 50%;
+  @each $key, $color in $colors {
+    @include styles(
+      $modes,
+      map.get($color, 'h'),
+      map.get($color, 's'),
+      map.get($color, 'l'),
+      $key
+    );
+  }
 
-  /* light */
-  --primary-light: hsl(
-    var(--primary-hue) var(--primary-saturation) var(--primary-lightness)
-  );
-  // --text-light-1: hsl(var(--primary-hue) var(--primary-saturation) 10%);
-  // --text-light-2: hsl(var(--primary-hue) 30% 30%);
-  --primary-shadow-light: var(--primary-hue) 10% 20%;
+  /* extra */
   --shadow-strength-light: 0.02;
-
-  /* dark */
-  --primary-dark: hsl(
-    var(--primary-hue) calc(var(--primary-saturation) / 2)
-      calc(var(--primary-lightness) / 1.5)
-  );
-  // --text-dark-1: hsl(var(--primary-hue) 15% 85%);
-  // --text-dark-2: hsl(var(--primary-hue) 5% 65%);
-  --primary-shadow-dark: var(--primary-hue) 50% 3%;
   --shadow-strength-dark: 0.8;
-
-  /* dim */
-  --primary-dim: hsl(
-    var(--primary-hue) calc(var(--primary-saturation) / 1.25)
-      calc(var(--primary-lightness) / 1.25)
-  );
-  // --text-dim-1: hsl(var(--primary-hue) 15% 75%);
-  // --text-dim-2: hsl(var(--primary-hue) 10% 61%);
-  --primary-shadow-dim: var(--primary-hue) 30% 13%;
   --shadow-strength-dim: 0.2;
-
-  @include styles($modes);
-  @include texts($modes);
 }
 
 :root {
   color-scheme: light;
 
-  /* set defaults */
-  --primary: var(--primary-light);
-  --text1: var(--text-light-1);
-  --text2: var(--text-light-2);
-  --primary1: var(--primary-light-1);
-  --primary2: var(--primary-light-2);
-  --primary3: var(--primary-light-3);
-  --primary4: var(--primary-light-4);
-  --error1: var(--error-light-1);
-  --error2: var(--error-light-2);
-  --error3: var(--error-light-3);
-  --error4: var(--error-light-4);
-  --primary-shadow: var(--primary-shadow-light);
+  @include styleMode('light', $modes, $colors);
+  --shadow-strength: var(--shadow-strength-light);
+}
+
+[color-scheme='light'] {
+  color-scheme: light;
+
+  @include styleMode('light', $modes, $colors);
   --shadow-strength: var(--shadow-strength-light);
 }
 
@@ -124,61 +154,15 @@ $modes: (
   :root {
     color-scheme: dark;
 
-    --primary: var(--primary-dark);
-    --text1: var(--text-dark-1);
-    --text2: var(--text-dark-2);
-    --primary1: var(--primary-dark-1);
-    --primary2: var(--primary-dark-2);
-    --primary3: var(--primary-dark-3);
-    --primary4: var(--primary-dark-4);
-    --primary-shadow: var(--primary-shadow-dark);
+    @include styleMode('dark', $modes, $colors);
     --shadow-strength: var(--shadow-strength-dark);
   }
 }
 
-[color-scheme='light'] {
-  color-scheme: light;
-
-  --primary: var(--primary-light);
-  --text1: var(--text-light-1);
-  --text2: var(--text-light-2);
-  --primary1: var(--primary-light-1);
-  --primary2: var(--primary-light-2);
-  --primary3: var(--primary-light-3);
-  --primary4: var(--primary-light-4);
-  --primary-shadow: var(--primary-shadow-light);
-  --shadow-strength: var(--shadow-strength-light);
-}
-
-[color-scheme='dark'] {
+[color-scheme='dark'],
+html.dark {
   color-scheme: dark;
 
-  --primary: var(--primary-dark);
-  --text1: var(--text-dark-1);
-  --text2: var(--text-dark-2);
-  --primary1: var(--primary-dark-1);
-  --primary2: var(--primary-dark-2);
-  --primary3: var(--primary-dark-3);
-  --primary4: var(--primary-dark-4);
-  --primary-shadow: var(--primary-shadow-dark);
+  @include styleMode('dark', $modes, $colors);
   --shadow-strength: var(--shadow-strength-dark);
-}
-
-[color-scheme='dim'] {
-  color-scheme: dark;
-
-  --primary: var(--primary-dim);
-  --text1: var(--text-dim-1);
-  --text2: var(--text-dim-2);
-  --primary1: var(--primary-dim-1);
-  --primary2: var(--primary-dim-2);
-  --primary3: var(--primary-dim-3);
-  --primary4: var(--primary-dim-4);
-  --primary-shadow: var(--primary-shadow-dim);
-  --shadow-strength: var(--shadow-strength-dim);
-}
-
-:root {
-  --border-radius: 0.5rem;
-  --easing-function: ease;
 }
